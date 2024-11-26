@@ -1,0 +1,44 @@
+.modal {
+  display: none;
+}
+
+.dialog {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0px;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.dialog-scrollbody {
+  height: 100%;
+  overflow: auto;
+  text-align: center;
+}
+
+.dialog-scrollbody-content {
+  margin: 32px;
+  max-width: 600px;
+  padding: 5rem;
+  display: inline-block;
+  background-color: white;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.dialog-scrollbody::after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+  width: 0;
+}

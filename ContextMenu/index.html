@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="contextMenuBtn">Show Context Menu</button>
+    <div id="contextMenu" class="context-menu">
+      <ul>
+        <li>Action 1</li>
+        <li>Action 2</li>
+        <li>Action 3</li>
+      </ul>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var contextMenuBtn = document.getElementById('contextMenuBtn');
+        var contextMenu = document.getElementById('contextMenu');
+
+        contextMenuBtn.addEventListener('click', function (event) {
+          event.preventDefault();
+          contextMenu.style.display = 'block';
+          positionContextMenu(event);
+          enableKeyboardNavigation();
+        });
+
+        function positionContextMenu(event) {
+          var windowHeight = window.innerHeight;
+          var menuHeight = contextMenu.offsetHeight;
+          var mouseY = event.clientY;
+
+          if (menuHeight + mouseY > windowHeight) {
+            // If menu will extend beyond viewport bottom, adjust position
+            contextMenu.style.top = windowHeight - menuHeight + 'px';
+          } else {
+            contextMenu.style.top = mouseY + 'px';
+          }
+
+          contextMenu.style.left = event.clientX + 'px';
+        }
+
+        function enableKeyboardNavigation() {
+          var menuItems = contextMenu.querySelectorAll('li');
+          var currentIndex = -1;
+
+          contextMenu.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowDown') {
+              event.preventDefault();
+              currentIndex = (currentIndex + 1) % menuItems.length;
+              focusMenuItem(currentIndex);
+            } else if (event.key === 'ArrowUp') {
+              event.preventDefault();
+              currentIndex =
+                (currentIndex - 1 + menuItems.length) % menuItems.length;
+              focusMenuItem(currentIndex);
+            } else if (event.key === 'Enter') {
+              event.preventDefault();
+              selectMenuItem(currentIndex);
+            }
+          });
+
+          function focusMenuItem(index) {
+            menuItems.forEach(function (item, i) {
+              if (i === index) {
+                item.classList.add('focused');
+                item.focus();
+              } else {
+                item.classList.remove('focused');
+              }
+            });
+          }
+
+          function selectMenuItem(index) {
+            if (index >= 0 && index < menuItems.length) {
+              var selectedItem = menuItems[index];
+              selectedItem.click();
+            }
+          }
+        }
+
+        window.addEventListener('resize', function () {
+          if (contextMenu.style.display === 'block') {
+            positionContextMenu(event);
+          }
+        });
+
+        window.addEventListener('scroll', function () {
+          if (contextMenu.style.display === 'block') {
+            positionContextMenu(event);
+          }
+        });
+
+        document.addEventListener('click', function (event) {
+          var isClickInsideContextMenu = contextMenu.contains(event.target);
+          var isClickOnContextMenuBtn = event.target === contextMenuBtn;
+
+          if (!isClickInsideContextMenu && !isClickOnContextMenuBtn) {
+            contextMenu.style.display = 'none';
+          }
+        });
+
+        // Add event listener to menu items
+        var menuItems = contextMenu.querySelectorAll('li');
+        menuItems.forEach(function (item) {
+          item.addEventListener('click', function () {
+            contextMenu.style.display = 'none';
+            contextMenuBtn.textContent = item.textContent;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

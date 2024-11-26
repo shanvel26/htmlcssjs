@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Learning HTML, CSS, Javascript</title>
+  </head>
+  <body>
+    <!-- Button to open the modal -->
+    <button id="openModalBtn">Open Modal</button>
+
+    <div class="dialog" id="mydialog">
+      <div class="backdrop" id="mybackdrop" aria-hidden="true"></div>
+      <div class="dialog-scrollbody" id="dialogScrollbody">
+        <div class="dialog-scrollbody-content">
+          This example includes a button that, when clicked, opens a modal with
+          scrolling capabilities. The overflow: auto; property is applied to the
+          .modal class to enable scrolling within the modal. Adjust the content
+          inside the .modal-content div as needed.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let dialog = document.getElementById('mydialog');
+      let dialogScrollbody = document.getElementById('dialogScrollbody');
+
+      let openModalBtn = document.getElementById('openModalBtn');
+      openModalBtn.onclick = () => {
+        dialog.style.display = 'block';
+      };
+
+      window.onclick = (event) => {
+        console.log(event.target);
+        if (event.target == dialogScrollbody) {
+          dialog.style.display = 'none';
+        }
+      };
+    </script>
+  </body>
+</html>
